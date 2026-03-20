@@ -1,0 +1,6 @@
+address,parcel_id,assessed_value,lot_size,zip_code,owner_name
+"8600 HWY 150, Greenville, IN 47124","22-01-01-100-001.000-001",250000,2.5,47124,"John Doe"
+"8600 HWY 150, Greenville, IN 47124","22-01-01-100-002.000-001",275000,3.0,47124,"Jane Smith"
+"123 Main St, Indianapolis, IN 46201","49-01-01-100-001.000-001",150000,0.25,46201,"Indianapolis"
+"456 Oak Ave, Indianapolis, IN 46201","49-01-01-100-002.000-001",180000,0.3,46201,"Michael Brown"
+"789 Pine Rd, Bloomington, IN 47401","53-01-01-100-001.000-001",350000,1.5,47401,"Bloomington"

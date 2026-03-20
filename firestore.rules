@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "standardissuearmory@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    // User profiles: Only owner can read/write their own profile
+    match /users/{uid} {
+      allow read, write: if isOwner(uid) || isAdmin();
+    }
+
+    // Property claims: Only owner can read/write their own claims
+    match /claims/{claimId} {
+      function isValidClaim(data) {
+        return data.parcelId is string &&
+               data.ownerUid == request.auth.uid &&
+               data.status in ['pending', 'verified', 'rejected'] &&
+               data.isPaid is bool;
+      }
+
+      allow create: if isAuthenticated() && isValidClaim(request.resource.data);
+      allow update: if isAuthenticated() && isValidClaim(request.resource.data) && 
+                      (resource.data.ownerUid == request.auth.uid || isAdmin());
+      allow read: if isAuthenticated() && (resource.data.ownerUid == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+  }
+}

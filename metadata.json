@@ -1,0 +1,5 @@
+{
+  "name": "Curb Score",
+  "description": "Property intelligence app for homeowners and investors. Get an instant rating of your property's structural health, maintenance, and market value.",
+  "requestFramePermissions": ["camera"]
+}

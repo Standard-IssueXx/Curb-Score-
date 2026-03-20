@@ -1,0 +1,45 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user profile information and subscription status.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique Firebase Auth UID." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "isElite": { "type": "boolean", "description": "Whether the user has an active $1/month membership." },
+        "subscriptionId": { "type": "string", "description": "The Fortis subscription ID." },
+        "claimedProperties": { 
+          "type": "array", 
+          "items": { "type": "string" },
+          "description": "List of parcel IDs claimed by the user."
+        }
+      },
+      "required": ["uid", "email"]
+    },
+    "PropertyClaim": {
+      "title": "Property Claim",
+      "description": "Stores verification and claim details for a property.",
+      "type": "object",
+      "properties": {
+        "parcelId": { "type": "string", "description": "The unique parcel ID from the CSV." },
+        "ownerUid": { "type": "string", "description": "The UID of the user who claimed the property." },
+        "verifiedAt": { "type": "string", "format": "date-time", "description": "When the property was verified via OCR." },
+        "status": { "type": "string", "enum": ["pending", "verified", "rejected"], "description": "The status of the claim." },
+        "isPaid": { "type": "boolean", "description": "Whether the $1/month payment has been completed." }
+      },
+      "required": ["parcelId", "ownerUid", "status", "isPaid"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/claims/{claimId}": {
+      "schema": "PropertyClaim",
+      "description": "Property claim records."
+    }
+  }
+}
